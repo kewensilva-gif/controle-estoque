@@ -4,6 +4,7 @@ import Item ( Item(..) )
 
 -- Declaração de atributos
 type Quant = Int
+type IdProd = Int
 type Estoque = [Item]
 listaProdutos :: Estoque
 listaProdutos = [ 
@@ -18,3 +19,25 @@ listaProdutos = [
         Item (Produto 8 "Macarrão" 2.3 "Galo") 9,
         Item (Produto 9 "Óleo" 3.5 "Liza") 6
     ]
+
+-- Métodos
+getNomeProduto :: Estoque -> IdProd -> String
+getNomeProduto [] _ = "Produto Inexistente"
+getNomeProduto (Item (Produto id nome _ _) _:ps) idSearch
+    | id == idSearch = nome
+    | otherwise = getNomeProduto ps idSearch
+
+getPrecoProduto :: Estoque -> IdProd -> Float
+getPrecoProduto [] _ = 0.0
+getPrecoProduto (Item (Produto id _ preco _) _:ps) idSearch
+    | id == idSearch = preco
+    | otherwise = getPrecoProduto ps idSearch
+
+getMarcaProduto :: Estoque -> IdProd -> String
+getMarcaProduto [] _ = "Produto Inexistente"
+getMarcaProduto (Item (Produto id _ _ marca) _:ps) idSearch
+    | id == idSearch = marca
+    | otherwise = getMarcaProduto ps idSearch
+
+-- adiciona produto ao estoque
+-- remove produto do estoque

@@ -1,0 +1,2 @@
+Aprendendo haskell
+Haskell eh legal

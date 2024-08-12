@@ -9,8 +9,8 @@ type Quant = Int
 data Produto = Produto Id Nome Preco Marca
 
 -- Métodos
-getNomeProduto :: [Produto] -> Id -> Nome
+{- getNomeProduto :: [Produto] -> Id -> Nome
 getNomeProduto [] _ = ""
 getNomeProduto (Produto id nome _ _:ps) idSearch 
     | id == idSearch = nome
-    | otherwise = getNomeProduto ps idSearch
+    | otherwise = getNomeProduto ps idSearch -}
