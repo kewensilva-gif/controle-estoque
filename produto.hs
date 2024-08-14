@@ -6,7 +6,7 @@ type Nome = String
 type Preco = Float
 type Marca = String
 type Quant = Int
-data Produto = Produto Id Nome Preco Marca
+data Produto = Produto Id Nome Preco Marca Quant
 
 -- Métodos
 {- getNomeProduto :: [Produto] -> Id -> Nome

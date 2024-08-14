@@ -1,7 +1,6 @@
 module Main where
 import Estoque
 import Produto
-import Item
 
 opcoes :: String
 opcoes = "1 - Retorna nome\n2 - Retorna Quantidade\n0 - Sair"
@@ -25,7 +24,7 @@ menu op = case op of
         marca <- getLine
         putStrLn "Digite a quantidade: "
         qtd <- getLine
-        registrarItem (Item (Produto (read id :: Int) nome (read preco :: Float) marca) (read qtd :: Int))
+        registrarItem (Produto (read id :: Int) nome (read preco :: Float) marca (read qtd :: Int))
         
 
     0 ->
