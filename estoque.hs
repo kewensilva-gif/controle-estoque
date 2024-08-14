@@ -1,6 +1,8 @@
 module Estoque where
 import Produto ( Produto(..) )
 import Item ( Item(..) )
+import GHC.List
+import System.IO
 
 -- Declaração de atributos
 type Quant = Int
@@ -40,4 +42,26 @@ getMarcaProduto (Item (Produto id _ _ marca) _:ps) idSearch
     | otherwise = getMarcaProduto ps idSearch
 
 -- adiciona produto ao estoque
+registrarItem:: Item -> IO()
+registrarItem (Item (Produto id nome preco marca) qtd)= 
+    appendFile "teste.txt" (show id ++ "," ++ nome ++ "," ++ show preco ++ "," ++ marca ++ "," ++ show qtd ++ "\n")
+
+splitBy :: Char -> String -> [String]
+splitBy _ [] = [""]
+splitBy delimiter (c:cs)
+    | c == delimiter = "" : rest
+    | otherwise = (c : head rest) : tail rest
+    where
+        rest = splitBy delimiter cs
+
+lerArqProduto :: IO()
+lerArqProduto = 
+    do 
+        arq <- openFile "teste.txt" ReadMode
+        content <- hGetContents arq
+        let partes = splitBy ',' content
+        mapM_ putStrLn partes
+        hClose arq
+
+
 -- remove produto do estoque

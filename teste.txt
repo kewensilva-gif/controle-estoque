@@ -1,2 +1,2 @@
-Aprendendo haskell
-Haskell eh legal
+0,teste,2.4,teste
+0,arroz,4.5,namorado,4
