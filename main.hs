@@ -1,24 +1,24 @@
 module Main where
-import Estoque
-import Produto
+import Produto(Produto(..))
 import System.Process (system)
 import Control.Concurrent (threadDelay)
 import Utils
+import Estoque (atualizarProduto, registrarProduto, criarEstoque, listaProdutos, removerProduto)
 
 opcoes :: String
-opcoes = "1 - Criar Estoque\n2 - Adicionar Produto\n0 - Sair\n"
+opcoes = "1 - Criar Estoque\n2 - Adicionar Produto\n3 - Atualizar Produto\n4 - Remover Produto\n0 - Sair\n"
 
 coletaDadosProd :: IO()
 coletaDadosProd = do
-    putStrLn "Digite o id: "
+    putStr "Digite o id: "
     id <- getLine
-    putStrLn "Digite o nome: "
+    putStr "Digite o nome: "
     nome <- getLine
-    putStrLn "Digite o preco: "
+    putStr "Digite o preco: "
     preco <- getLine
-    putStrLn "Digite a marca: "
+    putStr "Digite a marca: "
     marca <- getLine
-    putStrLn "Digite a quantidade: "
+    putStr "Digite a quantidade: "
     qtd <- getLine
     registrarProduto (Produto (read id :: Int) nome (read preco :: Float) marca (read qtd :: Int))
 
@@ -29,10 +29,29 @@ menu op = case op of
         criarEstoque listaProdutos
         repeatMenu
     2 -> do
-        putStrLn "Registrar produto no estoque:"
+        putStrLn "Registrar produto no estoque"
         coletaDadosProd
         repeatMenu
-
+    3 -> do
+        putStrLn "Atualizar produto no estoque"
+        putStr "Digite o id: "
+        id <- getLine
+        putStr "Digite o novo nome: "
+        nome <- getLine
+        putStr "Digite o novo preco: "
+        preco <- getLine
+        putStr "Digite a nova marca: "
+        marca <- getLine
+        putStr "Digite a nova quantidade: "
+        qtd <- getLine
+        atualizarProduto (read id :: Int) "estoque.csv" (Produto (read id :: Int) nome (read preco :: Float) marca (read qtd :: Int))
+        repeatMenu
+    4 -> do
+        putStrLn "Remover produto do estoque"
+        putStrLn "Digite o id do produto: "
+        id <- getLine
+        removerProduto (read id :: Int) "estoque.csv"
+        repeatMenu
     0 ->
         do
             putStrLn "Encerra"

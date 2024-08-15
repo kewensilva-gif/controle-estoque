@@ -1,4 +1,12 @@
 id,nome,preco,marca,qtd
+0,Queijo,1.4,Natville,5
+1,Leite,2.0,Italac,10
 2,Pao,0.5,Panificadora,15
-novas
+3,Cafe,3.2,Melitta,8
+4,Acucar,1.8,Uniao,12
+5,Manteiga,2.5,Aviacao,7
+6,Arroz,4.0,Tio Joao,20
+7,Feijao,3.0,Camil,18
 8,Macarrao,2.3,Galo,9
+9,Oleo,3.5,Liza,6
+10,teste,2.5,teste,1

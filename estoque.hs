@@ -2,7 +2,7 @@ module Estoque where
 import Produto ( Produto(..) )
 -- import GHC.List
 import System.IO
-import Utils (filter2, splitBy, filterMap)
+import Utils (filter2, splitBy, filterMap, converterProdutoEmString)
 import Data.List (isPrefixOf)
 
 -- Declaração de atributos
@@ -30,25 +30,6 @@ criarEstoque [] = do putStrLn "Estoque criado com sucesso!\n"
 criarEstoque (p:ps) = do
     registrarProduto p
     criarEstoque ps
-    
-
-getNomeProduto :: Estoque -> IdProd -> String
-getNomeProduto [] _ = "Produto Inexistente"
-getNomeProduto (Produto id nome _ _ _:ps) idSearch
-    | id == idSearch = nome
-    | otherwise = getNomeProduto ps idSearch
-
-getPrecoProduto :: Estoque -> IdProd -> Float
-getPrecoProduto [] _ = 0.0
-getPrecoProduto (Produto id _ preco _ _:ps) idSearch
-    | id == idSearch = preco
-    | otherwise = getPrecoProduto ps idSearch
-
-getMarcaProduto :: Estoque -> IdProd -> String
-getMarcaProduto [] _ = "Produto Inexistente"
-getMarcaProduto (Produto id _ _ marca _:ps) idSearch
-    | id == idSearch = marca
-    | otherwise = getMarcaProduto ps idSearch
 
 -- adiciona produto ao estoque
 registrarProduto:: Produto -> IO()
@@ -56,16 +37,6 @@ registrarProduto (Produto id nome preco marca qtd) = do
     arq <- openFile "estoque.csv" AppendMode
     hPutStrLn arq (show id ++ "," ++ nome ++ "," ++ show preco ++ "," ++ marca ++ "," ++ show qtd)
     hClose arq
-
-getProduto :: IO()
-getProduto =
-    do 
-        arq <- openFile "teste.txt" ReadMode
-        content <- hGetContents arq
-        let partes = splitBy ',' content
-        mapM_ putStrLn partes
-        hClose arq
-
 
 -- Função para remover um produto do arquivo de estoque
 removerProduto :: Int -> String -> IO ()
@@ -90,19 +61,19 @@ removerProduto idProduto caminho = do
 type Colunas = [String]
 type Valores = [String]
 
-percorreLinhas :: [String] -> String -> [String]
-percorreLinhas [] comparador = []
-percorreLinhas (l:ls) comparador
-    | comparador == head (splitBy ',' l) = "novas":percorreLinhas ls comparador
-    | otherwise = l:percorreLinhas ls comparador
+modificarElemento :: [String] -> String -> String -> [String]
+modificarElemento  [] _ _ = []
+modificarElemento  (l:ls) comparador novo
+    | comparador `isPrefixOf` l = novo:modificarElemento ls comparador novo
+    | otherwise = l:modificarElemento ls comparador novo
 
-atualizaProduto :: Int -> String -> Colunas -> Valores -> IO ()
-atualizaProduto idProduto caminho col val = do
+atualizarProduto :: Int -> String -> Produto -> IO ()
+atualizarProduto idProduto caminho produto = do
     withFile caminho ReadMode (\arquivo -> do
         conteudo <- hGetContents arquivo
         let linhas = lines conteudo
-        let novasLinhas = percorreLinhas linhas (show idProduto)
-        putStrLn ("\n\n" ++ show novasLinhas ++ "\n\n")
+        
+        let novasLinhas = modificarElemento linhas (show idProduto) (converterProdutoEmString produto)
         -- let novasLinhas = filter2 (\linha -> not (isPrefixOf2 (show idProduto) (splitBy ',' linha))) linhas
         
         -- essa parte é responsável por forçar a avaliação completa do arquivo
@@ -111,5 +82,5 @@ atualizaProduto idProduto caminho col val = do
         
         -- Sobrescrever o arquivo com as linhas restantes
         writeFile caminho (unlines novasLinhas)
-        putStrLn $ "Produto com id " ++ show idProduto ++ " removido do estoque."
+        putStrLn $ "Produto com id " ++ show idProduto ++ " atualizado no estoque."
         )
