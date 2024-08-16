@@ -10,8 +10,7 @@ opcoes = "1 - Criar Estoque\n2 - Adicionar Produto\n3 - Atualizar Produto\n4 - R
 
 coletaDadosProd :: IO()
 coletaDadosProd = do
-    putStr "Digite o id: "
-    id <- getLine
+    id <- idAutoIncrement "estoque.csv"
     putStr "Digite o nome: "
     nome <- getLine
     putStr "Digite o preco: "
@@ -20,7 +19,7 @@ coletaDadosProd = do
     marca <- getLine
     putStr "Digite a quantidade: "
     qtd <- getLine
-    registrarProduto (Produto (read id :: Int) nome (read preco :: Float) marca (read qtd :: Int))
+    registrarProduto (Produto id nome (read preco :: Float) marca (read qtd :: Int))
 
 menu :: Int -> IO()
 menu op = case op of
