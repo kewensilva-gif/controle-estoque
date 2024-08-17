@@ -1,7 +1,11 @@
-<h1>Controle de estoque em Haskell</h1>
+<h2>Controle de estoque em Haskell</h2>
 <ol>
   <li>
-    <h2>Execução em linha de comando com GHCI</h2>
-    <p></p>
+    <h3>Execução em linha de comando com GHCI</h3>
+    <ol>
+      <li>> ghci</li>
+      <li>> :load main.hs</li>
+      <li>> main</li>
+    </ol>
   </li>
 </ol>
